@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The catalogue root element contains the book catalogue. -->
+<catalogue>
+    <!-- Each book represents one book; id is its unique identifier. -->
+    <book id="B001">
+        <!-- title is the book title, author is the writer, and price is an example price in NZD. -->
+        <title>The Whale Rider</title>
+        <author>Witi Ihimaera</author>
+        <price>24.99</price>
+    </book>
+    <book id="B002">
+        <title>The Luminaries</title>
+        <author>Eleanor Catton</author>
+        <price>32.99</price>
+    </book>
+    <book id="B003">
+        <title>The Penguin History of New Zealand</title>
+        <author>Michael King</author>
+        <price>29.99</price>
+    </book>
+</catalogue>

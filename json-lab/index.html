@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+    <!-- Use UTF-8 to support English and Māori characters. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Zealand User Profiles</title>
+    <style>
+        /* Set the page font and margins. */
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        /* Display each user in a bordered profile section. */
+        section { border: 1px solid #999; padding: 15px; margin-bottom: 15px; }
+        h2 { margin-top: 0; }
+    </style>
+</head>
+<body>
+    <!-- Display an error message here if the request fails. -->
+    <p id="message"></p>
+    <!-- Container for the user profiles created by JavaScript. -->
+    <div id="profiles"></div>
+    <script>
+        // Fetch userProfiles.json from the same folder. Open this page through an HTTP server.
+        fetch('userProfiles.json')
+            .then(response => {
+                // Check the HTTP response and let catch handle any failure.
+                if (!response.ok) {
+                    throw new Error('Fetch error: ' + response.status);
+                }
+                // Parse the JSON response into JavaScript arrays and objects.
+                return response.json();
+            })
+            .then(users => {
+                // The JSON root is an array of users with personal details, addresses and preferences.
+                // firstName/lastName: given name and surname; email: email address; dateOfBirth: birth date.
+                // address contains street, city, state (region) and zipCode (postcode).
+                // preferences contains theme, language, notifications and newsletter subscription.
+                // notifications and subscription are booleans: true means yes and false means no.
+                // Loop through the array and create a section element for each user.
+                for (let i = 0; i < users.length; i++) {
+                    const user = users[i];
+                    // Get the nested address and preferences objects to access their fields.
+                    const address = user.address;
+                    const preferences = user.preferences;
+                    const section = document.createElement('section');
+                    // Fill the HTML with user details; conditional expressions display booleans as Yes or No.
+                    section.innerHTML = `
+                        <h2>${user.firstName} ${user.lastName}</h2>
+                        <p>Email: ${user.email}</p>
+                        <p>Date of birth: ${user.dateOfBirth}</p>
+                        <p>Address: ${address.street}, ${address.city},
+                            ${address.state} ${address.zipCode}, New Zealand</p>
+                        <p>Theme: ${preferences.theme}</p>
+                        <p>Language: ${preferences.language}</p>
+                        <p>Notifications: ${preferences.notifications ? 'Yes' : 'No'}</p>
+                        <p>Newsletter subscription: ${preferences.subscription ? 'Yes' : 'No'}</p>
+                    `;
+                    // Append this user profile to the page.
+                    document.getElementById('profiles').appendChild(section);
+                }
+            })
+            // Display the error on the page and log it to the browser console.
+            .catch(err => {
+                document.getElementById('message').textContent = err.message;
+                console.error(err.message);
+            });
+    </script>
+</body>
+</html>
